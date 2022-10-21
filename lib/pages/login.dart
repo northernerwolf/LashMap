@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:lash_map/db/repo/request.dart';
 import 'package:lash_map/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/utils.dart';
 
@@ -146,12 +147,19 @@ class _LoginPageState extends State<LoginPage> {
                     DioClient()
                         .loginUser(
                             _mailController.text, _passwordController.text)
-                        .then((value) {
-                      setState(() {
-                        isLoading = false;
-                        Navigator.pop(context);
-                        openHome(context);
-                      });
+                        .then((value) async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs
+                          .setString('token', value.data["data"]["token"])
+                          .then(
+                        (value) {
+                          setState(() {
+                            isLoading = false;
+                            Navigator.pop(context);
+                            openHome(context);
+                          });
+                        },
+                      );
                     }).catchError((e) {
                       setState(() {
                         isLoading = false;

@@ -19,6 +19,8 @@ class DioClient {
     try {
       final response = await _dio
           .post("/api/v1/login", data: {"email": mail, "password": password});
+      print(response.data);
+
       return response;
     } catch (e) {
       throw Exception(e);
