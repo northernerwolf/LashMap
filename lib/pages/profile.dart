@@ -24,14 +24,22 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _mailController.text = "olga198@gsmail.com";
+    _phoneController.text = "+7 777 777 77 77";
+    _nameController.text = "ОЛЬГА МАЛИЕВА";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(children: [
-        SizedBox(
+        const SizedBox(
           height: 48,
         ),
-        ProfileHatLuxury(),
+        const ProfileHatLuxury(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: Column(
@@ -58,12 +66,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TextField(
                     enabled: false,
                     controller: _nameController,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       isDense: true,
                       suffixIcon: Image.asset("assets/images/pen.png"),
                       hintText: "ваша имя",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                           color: Color(0xff858383),
                           fontWeight: FontWeight.w400),
                       border: InputBorder.none,
@@ -98,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       isDense: true,
                       suffixIcon: Image.asset("assets/images/pen.png"),
                       hintText: "ваша почта",
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                           color: Color(0xff858383),
                           fontWeight: FontWeight.w400),
                       border: InputBorder.none,
@@ -127,13 +135,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
                     enabled: false,
-                    controller: _mailController,
-                    keyboardType: TextInputType.emailAddress,
+                    controller: _phoneController,
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       isDense: true,
                       suffixIcon: Image.asset("assets/images/pen.png"),
-                      hintText: "+7 777 777 77 77",
-                      hintStyle: TextStyle(
+                      hintText: "ваша телефон",
+                      hintStyle: const TextStyle(
                           color: Color(0xff858383),
                           fontWeight: FontWeight.w400),
                       border: InputBorder.none,
