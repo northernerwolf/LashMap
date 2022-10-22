@@ -23,6 +23,10 @@ void openLanding(BuildContext context) {
   );
 }
 
+bool isNumeric(String s) {
+  return int.tryParse(s) != null;
+}
+
 void openHome(BuildContext context) {
   Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const BottomNavPage()),

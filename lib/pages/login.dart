@@ -44,17 +44,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffF9F9F9),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 64),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const SizedBox(
-                height: 80.0,
+                height: 106.0,
               ),
               const Text(
                 'ВХОД',
@@ -64,13 +63,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 60.0,
+                height: 102,
               ),
               Container(
                 width: double.infinity,
+                height: 35,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xffBBBBBB),
+                      offset: Offset(5, 5), //(x,y)
+                      blurRadius: 12.0,
+                    ),
+                  ],
+                  color: const Color(0xffDddbda),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -79,108 +86,126 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       hintText: "ваша почта",
+                      hintStyle: TextStyle(
+                          color: Color(0xff858383),
+                          fontWeight: FontWeight.w400),
                       border: InputBorder.none,
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: _passwordController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      hintText: "ваш пароль",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              const Text(
-                'забыли пароль',
-                style: TextStyle(
-                  color: AppColors.darkBlue,
-                  fontSize: 16.0,
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: AppColors.secondary,
-                  onPrimary: Colors.black,
-                  shadowColor: Colors.grey,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40.0)),
-                  minimumSize: const Size(400, 50), //////// HERE
+              Container(
+                height: 35,
+                decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xffBBBBBB),
+                      offset: Offset(5, 5),
+                      blurRadius: 12.0,
+                    ),
+                  ],
+                  color: const Color(0xffDddbda),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                onPressed: () {
-                  if (validated()) {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return WillPopScope(
-                          onWillPop: () async => false,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    );
-                    DioClient()
-                        .loginUser(
-                            _mailController.text, _passwordController.text)
-                        .then((value) async {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs
-                          .setString('token', value.data["data"]["token"])
-                          .then(
-                        (value) {
-                          setState(() {
-                            isLoading = false;
-                            Navigator.pop(context);
-                            openHome(context);
-                          });
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      hintText: "ваш пароль",
+                      hintStyle: TextStyle(
+                          color: Color(0xff858383),
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 52,
+              ),
+              const Text(
+                'забыли пароль',
+                style: TextStyle(
+                  color: AppColors.darkBlue,
+                  fontSize: 14.0,
+                ),
+              ),
+              const SizedBox(
+                height: 27,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 35,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.secondary,
+                    onPrimary: Colors.black,
+                    shadowColor: Colors.grey,
+                    elevation: 6,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13)),
+                  ),
+                  onPressed: () {
+                    if (validated()) {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return WillPopScope(
+                            onWillPop: () async => false,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
                         },
                       );
-                    }).catchError((e) {
-                      setState(() {
-                        isLoading = false;
-                        Navigator.pop(context);
-                        showSnackBar(context, "Неверный пароль или почта!");
+                      DioClient()
+                          .loginUser(
+                              _mailController.text, _passwordController.text)
+                          .then((value) async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs
+                            .setString('token', value.data["data"]["token"])
+                            .then(
+                          (value) {
+                            setState(() {
+                              isLoading = false;
+                              Navigator.pop(context);
+                              openHome(context);
+                            });
+                          },
+                        );
+                      }).catchError((e) {
+                        setState(() {
+                          isLoading = false;
+                          Navigator.pop(context);
+                          showSnackBar(context, "Неверный пароль или почта!");
 
-                        print(e);
+                          print(e);
+                        });
                       });
-                    });
-                  }
-                },
-                child: const Text(
-                  'ВОЙТИ',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.normal),
+                    }
+                  },
+                  child: const Text(
+                    'ВОЙТИ',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.normal),
+                  ),
                 ),
               ),
             ]),
-          )),
+          ),
         ),
       ),
     );

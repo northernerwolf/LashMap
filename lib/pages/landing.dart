@@ -16,22 +16,22 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF9F9F9),
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 64),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(
             width: double.infinity,
-            height: 40,
+            height: 35,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primary,
                 onPrimary: Colors.black,
                 shadowColor: Colors.grey,
-                elevation: 3,
+                elevation: 6,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0)),
+                    borderRadius: BorderRadius.circular(16.0)),
               ),
               onPressed: () {
                 openLogin(context);
@@ -40,8 +40,8 @@ class _LandingPageState extends State<LandingPage> {
                 'ВХОД',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400),
               ),
             ),
           ),
@@ -50,15 +50,15 @@ class _LandingPageState extends State<LandingPage> {
           ),
           SizedBox(
             width: double.infinity,
-            height: 40,
+            height: 35,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: AppColors.primary,
                 onPrimary: Colors.black,
                 shadowColor: Colors.grey,
-                elevation: 3,
+                elevation: 6,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0)),
+                    borderRadius: BorderRadius.circular(16.0)),
               ),
               onPressed: () {
                 openRegister(context);
@@ -67,10 +67,13 @@ class _LandingPageState extends State<LandingPage> {
                 'РЕГИСТРАЦИЯ',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 80,
           ),
         ]),
       )),

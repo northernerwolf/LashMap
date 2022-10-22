@@ -22,19 +22,13 @@ class BottomNavPage extends StatefulWidget {
 
 class _BottomNavPageState extends State<BottomNavPage> {
   int selectedIndex = 0;
-  final screens = const [
+  final screens = [
     ProfilePage(),
     CalendarPage(),
     AddPage(),
     MenuPage(),
     HomePage()
   ];
-  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-
-  Future<String> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString("token") ?? " ";
-  }
 
   @override
   Widget build(BuildContext context) {

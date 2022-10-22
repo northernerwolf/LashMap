@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lash_map/pages/splash.dart';
 
-import 'pages/landing.dart';
-
 void main() {
   runApp(const LashMap());
 }
@@ -14,7 +12,9 @@ class LashMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.orange),
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+      ),
       home: const SplashPage(),
     );
   }
