@@ -5,7 +5,7 @@ import 'package:lash_map/db/repo/request.dart';
 import 'package:lash_map/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/utils.dart';
+import '../../utils/utils.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
+  bool newPasswordSent = false;
 
   @override
   void dispose() {
@@ -126,14 +127,86 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 52,
-              ),
-              const Text(
-                'забыли пароль',
-                style: TextStyle(
-                  color: AppColors.darkBlue,
-                  fontSize: 14.0,
+              if (newPasswordSent)
+                const SizedBox(
+                  height: 15,
+                ),
+              if (newPasswordSent)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 64),
+                  child: Container(
+                    height: 28,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: RadialGradient(radius: 2.3, colors: [
+                        const Color(0xff1B307C),
+                        const Color(0xff1B3BB4).withOpacity(0.42)
+                      ]),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "новый пароль отправлен вам на почту",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                    ),
+                  ),
+                ),
+              if (newPasswordSent)
+                const SizedBox(
+                  height: 8,
+                ),
+              if (!newPasswordSent)
+                const SizedBox(
+                  height: 52,
+                ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return WillPopScope(
+                        onWillPop: () async => false,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                  );
+                  if (_mailController.text.isNotEmpty) {
+                    DioClient()
+                        .sendNewPassword(_mailController.text)
+                        .then((value) {
+                      setState(() {
+                        isLoading = false;
+                        Navigator.pop(context);
+                        newPasswordSent = true;
+                      });
+                    }).catchError((e) {
+                      print(e);
+                      setState(() {
+                        isLoading = false;
+                        newPasswordSent = false;
+
+                        Navigator.pop(context);
+                        showSnackBar(context,
+                            "Проверьте подключение и повторите попытку!");
+
+                        print(e);
+                      });
+                    });
+                  }
+                },
+                child: const Text(
+                  'забыли пароль',
+                  style: TextStyle(
+                    color: AppColors.darkBlue,
+                    fontSize: 14.0,
+                  ),
                 ),
               ),
               const SizedBox(

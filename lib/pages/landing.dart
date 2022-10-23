@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lash_map/pages/registration.dart';
 import 'package:lash_map/utils/app_colors.dart';
 import 'package:lash_map/utils/utils.dart';
-
-import 'login.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);

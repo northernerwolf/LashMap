@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/landing.dart';
-import 'package:lash_map/pages/registration.dart';
 import 'package:lash_map/pages/splash.dart';
 
-import '../pages/login.dart';
+import '../pages/auth/login.dart';
+import '../pages/auth/registration.dart';
 
 void openLogin(BuildContext context) {
   Navigator.of(context).push(

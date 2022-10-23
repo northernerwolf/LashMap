@@ -27,6 +27,17 @@ class DioClient {
     }
   }
 
+  Future<Response> sendNewPassword(mail) async {
+    try {
+      final response =
+          await _dio.post("/api/v1/restore", data: {"email": mail});
+
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<Response> createUser(mail, phone, password) async {
     try {
       final response = await _dio.post("/api/v1/registration",
