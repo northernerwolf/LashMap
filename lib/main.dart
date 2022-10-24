@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/splash.dart';
 
 void main() {

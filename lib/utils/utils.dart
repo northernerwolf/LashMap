@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lash_map/pages/add_new_client.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/landing.dart';
 import 'package:lash_map/pages/splash.dart';
@@ -10,6 +11,14 @@ void openLogin(BuildContext context) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => const LoginPage(),
+    ),
+  );
+}
+
+void openAddNewClient(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const AddNewClientPage(),
     ),
   );
 }

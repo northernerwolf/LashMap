@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:lash_map/db/models/client_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_url.dart';
 
@@ -33,6 +37,43 @@ class DioClient {
           await _dio.post("/api/v1/restore", data: {"email": mail});
 
       return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Response> addNewClient(fullName, phone, comment) async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+    try {
+      _dio.options.headers["token"] = token;
+      final response = await _dio.post("/api/v1/clients",
+          data: {"fullName": fullName, "phone": phone, "comment": comment});
+
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<ClientList>> getClients() async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+    try {
+      _dio.options.headers["token"] = token;
+      final response = await _dio.get(
+        "/api/v1/clients",
+      );
+      final List data = response.data["data"]["clients"];
+      List<ClientList> list =
+          data.map((data) => ClientList.fromMap(data)).toList();
+
+      list.sort(
+        (a, b) {
+          return a.fullName.toLowerCase().compareTo(b.fullName.toLowerCase());
+        },
+      );
+      return list;
     } catch (e) {
       throw Exception(e);
     }

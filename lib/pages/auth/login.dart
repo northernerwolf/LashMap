@@ -17,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool isLoading = false;
   bool newPasswordSent = false;
 
   @override
@@ -162,9 +161,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    isLoading = true;
-                  });
                   showDialog(
                     context: context,
                     barrierDismissible: false,
@@ -182,19 +178,17 @@ class _LoginPageState extends State<LoginPage> {
                         .sendNewPassword(_mailController.text)
                         .then((value) {
                       setState(() {
-                        isLoading = false;
                         Navigator.pop(context);
                         newPasswordSent = true;
                       });
                     }).catchError((e) {
                       print(e);
                       setState(() {
-                        isLoading = false;
                         newPasswordSent = false;
 
                         Navigator.pop(context);
                         showSnackBar(context,
-                            "Проверьте подключение и повторите попытку!");
+                            "Проверьте подключение и повторите попытку! $e");
 
                         print(e);
                       });
@@ -226,9 +220,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     if (validated()) {
-                      setState(() {
-                        isLoading = true;
-                      });
                       showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -251,7 +242,6 @@ class _LoginPageState extends State<LoginPage> {
                             .then(
                           (value) {
                             setState(() {
-                              isLoading = false;
                               Navigator.pop(context);
                               openHome(context);
                             });
@@ -259,7 +249,6 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       }).catchError((e) {
                         setState(() {
-                          isLoading = false;
                           Navigator.pop(context);
                           showSnackBar(context, "Неверный пароль или почта!");
 

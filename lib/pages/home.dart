@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Home"),
+        const Text("Home"),
         CupertinoButton(
             child: Text("sign out"),
             color: Colors.amber,
