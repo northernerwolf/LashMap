@@ -20,6 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _nameController = TextEditingController();
   bool isNameEnabled = false;
   bool isPhoneEnabled = false;
+  bool isLoaded = true;
+
   Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   @override
@@ -28,6 +30,21 @@ class _ProfilePageState extends State<ProfilePage> {
     _mailController.dispose();
     _phoneController.dispose();
     _nameController.dispose();
+  }
+
+  bool validated() {
+    if (_phoneController.text.isEmpty) {
+      showSnackBar(context, "Пожалуйста, дайте номер телефона!");
+      return false;
+    } else if (_nameController.text.isEmpty) {
+      showSnackBar(context, "Пожалуйста, укажите имя!");
+      return false;
+    } else if (_phoneController.text.length != 12) {
+      showSnackBar(context, "Укажите правильный номер телефона!");
+      return false;
+    } else {
+      return true;
+    }
   }
 
   getUserInfo() {
@@ -68,46 +85,105 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(children: [
-        const SizedBox(
-          height: 48,
-        ),
-        const ProfileHatLuxury(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 64),
-          child: Column(
-            children: [
+    return Stack(
+      children: [
+        Visibility(
+          visible: isLoaded,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(children: [
               const SizedBox(
-                height: 34,
+                height: 48,
               ),
-              Container(
-                width: double.infinity,
-                height: 35,
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xffBBBBBB),
-                      offset: Offset(5, 5), //(x,y)
-                      blurRadius: 12.0,
-                    ),
-                  ],
-                  color: const Color(0xffDddbda),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
+              ProfileHatLuxury(
+                name: _nameController.text.toString(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 64),
+                child: Column(
                   children: [
-                    Expanded(
+                    const SizedBox(
+                      height: 34,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xffBBBBBB),
+                            offset: Offset(5, 5), //(x,y)
+                            blurRadius: 12.0,
+                          ),
+                        ],
+                        color: const Color(0xffDddbda),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: TextField(
+                                enabled: isNameEnabled,
+                                controller: _nameController,
+                                keyboardType: TextInputType.name,
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  hintText: "ваша имя",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xff858383),
+                                      fontWeight: FontWeight.w400),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16, left: 8),
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (isNameEnabled && validated()) {
+                                    updateUserInfo(_nameController.text,
+                                        _phoneController.text);
+                                  }
+                                  setState(() {
+                                    isNameEnabled = true;
+                                  });
+                                },
+                                child: isNameEnabled
+                                    ? const Icon(CupertinoIcons.check_mark)
+                                    : Image.asset("assets/images/pen.png")),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xffBBBBBB),
+                            offset: Offset(5, 5), //(x,y)
+                            blurRadius: 12.0,
+                          ),
+                        ],
+                        color: const Color(0xffDddbda),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: TextField(
-                          enabled: isNameEnabled,
-                          controller: _nameController,
-                          keyboardType: TextInputType.name,
+                          controller: _mailController,
+                          enabled: false,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             isDense: true,
-                            hintText: "ваша имя",
+                            hintText: "ваша почта",
                             hintStyle: TextStyle(
                                 color: Color(0xff858383),
                                 fontWeight: FontWeight.w400),
@@ -116,240 +192,213 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, left: 8),
-                      child: GestureDetector(
-                          onTap: () {
-                            if (isNameEnabled &&
-                                _nameController.text.isNotEmpty) {
-                              updateUserInfo(_nameController.text);
-                            }
-                            setState(() {
-                              isNameEnabled = true;
-                            });
-                          },
-                          child: isNameEnabled
-                              ? const Icon(CupertinoIcons.check_mark)
-                              : Image.asset("assets/images/pen.png")),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                width: double.infinity,
-                height: 35,
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xffBBBBBB),
-                      offset: Offset(5, 5), //(x,y)
-                      blurRadius: 12.0,
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ],
-                  color: const Color(0xffDddbda),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: _mailController,
-                    enabled: false,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      hintText: "ваша почта",
-                      hintStyle: TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                width: double.infinity,
-                height: 35,
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xffBBBBBB),
-                      offset: Offset(5, 5), //(x,y)
-                      blurRadius: 12.0,
-                    ),
-                  ],
-                  color: const Color(0xffDddbda),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: TextField(
-                          enabled: isPhoneEnabled,
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          maxLength: 12,
-                          onChanged: (value) {
-                            if (value.isNotEmpty &&
-                                isNumeric(value.characters.first)) {
-                              _phoneController.text =
-                                  '+7${_phoneController.text}';
-                              _phoneController.selection =
-                                  TextSelection.fromPosition(TextPosition(
-                                      offset: _phoneController.text.length));
-                            }
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            counterText: "",
-                            hintText: "ваша телефон",
-                            hintStyle: TextStyle(
-                                color: Color(0xff858383),
-                                fontWeight: FontWeight.w400),
-                            border: InputBorder.none,
+                    Container(
+                      width: double.infinity,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xffBBBBBB),
+                            offset: Offset(5, 5), //(x,y)
+                            blurRadius: 12.0,
                           ),
+                        ],
+                        color: const Color(0xffDddbda),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: TextField(
+                                enabled: isPhoneEnabled,
+                                controller: _phoneController,
+                                keyboardType: TextInputType.phone,
+                                maxLength: 12,
+                                onChanged: (value) {
+                                  if (value.isNotEmpty &&
+                                      isNumeric(value.characters.first)) {
+                                    _phoneController.text =
+                                        '+7${_phoneController.text}';
+                                    _phoneController.selection =
+                                        TextSelection.fromPosition(TextPosition(
+                                            offset:
+                                                _phoneController.text.length));
+                                  }
+                                },
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  counterText: "",
+                                  hintText: "ваша телефон",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xff858383),
+                                      fontWeight: FontWeight.w400),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16, left: 8),
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (isPhoneEnabled && validated()) {
+                                    updateUserInfo(_nameController.text,
+                                        _phoneController.text);
+                                  }
+                                  setState(() {
+                                    isPhoneEnabled = true;
+                                  });
+                                },
+                                child: isPhoneEnabled
+                                    ? const Icon(CupertinoIcons.check_mark)
+                                    : Image.asset("assets/images/pen.png")),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primary,
+                          onPrimary: Colors.black,
+                          shadowColor: Colors.grey,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0)),
+                        ),
+                        onPressed: () {
+                          openChangePassword(context);
+                        },
+                        child: const Text(
+                          'ИЗМЕНИТЬ ПАРОЛЬ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, left: 8),
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isPhoneEnabled = true;
-                            });
-                          },
-                          child: isPhoneEnabled
-                              ? const Icon(CupertinoIcons.check_mark)
-                              : Image.asset("assets/images/pen.png")),
-                    )
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primary,
+                          onPrimary: Colors.black,
+                          shadowColor: Colors.grey,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0)),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'ОФОРМИТЬ ПОДПИСКУ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primary,
+                          onPrimary: Colors.black,
+                          shadowColor: Colors.grey,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0)),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'ЯЗЫК',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 35,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primary,
+                          onPrimary: Colors.black,
+                          shadowColor: Colors.grey,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0)),
+                        ),
+                        onPressed: () {},
+                        child: const Text(
+                          'СВЯЗАТЬСЯ С РАЗРАБОТЧИКОМ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 35,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                    onPrimary: Colors.black,
-                    shadowColor: Colors.grey,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                  ),
-                  onPressed: () {
-                    openChangePassword(context);
-                  },
-                  child: const Text(
-                    'ИЗМЕНИТЬ ПАРОЛЬ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 35,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                    onPrimary: Colors.black,
-                    shadowColor: Colors.grey,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    'ОФОРМИТЬ ПОДПИСКУ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 35,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                    onPrimary: Colors.black,
-                    shadowColor: Colors.grey,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    'ЯЗЫК',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 35,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                    onPrimary: Colors.black,
-                    shadowColor: Colors.grey,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    'СВЯЗАТЬСЯ С РАЗРАБОТЧИКОМ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-            ],
+              )
+            ]),
           ),
-        )
-      ]),
+        ),
+        Visibility(
+            visible: !isLoaded,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ))
+      ],
     );
   }
 
-  void updateUserInfo(String text) {
-    DioClient()
-        .updateUserInfo("text", "+73384603250", "en")
-        .then((value) => print(value.data))
-        .catchError((e) => print(e));
+  void updateUserInfo(String name, String phone) {
+    setState(() {
+      isLoaded = false;
+    });
+    DioClient().updateUserInfo(name, phone, "ru").then((value) {
+      setState(() {
+        isLoaded = true;
+        isNameEnabled = false;
+        isPhoneEnabled = false;
+      });
+    }).catchError((e) {
+      setState(() {
+        isLoaded = true;
+      });
+      showSnackBar(context,
+          "Проверьте подключение к Интернету или ваше имя содержит недопустимые символы!!");
+      print(e);
+    });
   }
 }

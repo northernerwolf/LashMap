@@ -182,6 +182,22 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _passwordController,
                           obscureText: true,
                           onChanged: (value) {
+                            if (_passwordRepeatController.text != value) {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.xmark_circle_fill,
+                                    size: 16,
+                                    color: Color(0xffd25857));
+                              });
+                            } else {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 16,
+                                    color: Color(0xff007AFF));
+                              });
+                            }
+
                             if (value.length < 5) {
                               setState(() {
                                 textFieldIcon = const Icon(

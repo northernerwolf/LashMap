@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/splash.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const LashMap());
+  initializeDateFormatting().then((_) => runApp(const LashMap()));
 }
 
 class LashMap extends StatelessWidget {

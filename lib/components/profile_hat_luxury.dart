@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lash_map/utils/app_colors.dart';
 
 class ProfileHatLuxury extends StatelessWidget {
-  const ProfileHatLuxury({super.key});
+  final String name;
+  const ProfileHatLuxury({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +33,13 @@ class ProfileHatLuxury extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: [Color(0xff443C38), Color(0xff221E18)],
                       )),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(left: 40),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "ОЛЬГА МАЛИЕВА",
-                        style: TextStyle(
+                        name.toUpperCase(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                         ),

@@ -98,6 +98,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     controller: _passwordController,
                     obscureText: true,
                     onChanged: (value) {
+                      if (_passwordRepeatController.text != value) {
+                        setState(() {
+                          repeatTextFieldIcon = const Icon(
+                              CupertinoIcons.xmark_circle_fill,
+                              size: 16,
+                              color: Color(0xffd25857));
+                        });
+                      } else {
+                        setState(() {
+                          repeatTextFieldIcon = const Icon(
+                              CupertinoIcons.check_mark,
+                              size: 16,
+                              color: Color(0xff007AFF));
+                        });
+                      }
+
                       if (value.length < 5) {
                         setState(() {
                           textFieldIcon = const Icon(
@@ -209,7 +225,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       DioClient()
                           .updatePassword(_passwordController.text.toString())
                           .then((value) async {
-                        print(value.data);
+                        setState(() {
+                          isLoading = false;
+                          Navigator.pop(context);
+                        });
+                        showSnackBar(context, "Пароль успешно изменен!");
                       }).catchError((e) {
                         setState(() {
                           isLoading = false;
