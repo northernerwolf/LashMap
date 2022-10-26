@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lash_map/components/profile_hat_luxury.dart';
+import 'package:lash_map/db/repo/request.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/app_colors.dart';
+import '../utils/utils.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,6 +18,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  bool isNameEnabled = false;
+  bool isPhoneEnabled = false;
+  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   @override
   void dispose() {
@@ -23,12 +30,40 @@ class _ProfilePageState extends State<ProfilePage> {
     _nameController.dispose();
   }
 
+  getUserInfo() {
+    DioClient().getUserInfo().then((value) {
+      setState(() {
+        _mailController.text = value.data["data"]["email"];
+        _phoneController.text = "+${value.data["data"]["phone"]}";
+        _nameController.text = value.data["data"]["fullName"];
+
+        prefs.then((pref) async {
+          await pref.setString("fullName", value.data["data"]["fullName"]);
+          await pref.setString("phone", "+${value.data["data"]["phone"]}");
+          await pref.setString("email", value.data["data"]["email"]);
+        }).catchError((e) {
+          print(e);
+        });
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    _mailController.text = "olga198@gsmail.com";
-    _phoneController.text = "+7 777 777 77 77";
-    _nameController.text = "ОЛЬГА МАЛИЕВА";
+    prefs.then((value) {
+      setState(() {
+        _mailController.text = value.getString("email") ?? "";
+        _phoneController.text = value.getString("phone") ?? "";
+        _nameController.text = value.getString("fullName") ?? "";
+      });
+    }).catchError((e) {
+      print(e);
+    });
+
+    getUserInfo();
   }
 
   @override
@@ -61,22 +96,43 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: const Color(0xffDddbda),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    enabled: false,
-                    controller: _nameController,
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      suffixIcon: Image.asset("assets/images/pen.png"),
-                      hintText: "ваша имя",
-                      hintStyle: const TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: TextField(
+                          enabled: isNameEnabled,
+                          controller: _nameController,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            hintText: "ваша имя",
+                            hintStyle: TextStyle(
+                                color: Color(0xff858383),
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16, left: 8),
+                      child: GestureDetector(
+                          onTap: () {
+                            if (isNameEnabled &&
+                                _nameController.text.isNotEmpty) {
+                              updateUserInfo(_nameController.text);
+                            }
+                            setState(() {
+                              isNameEnabled = true;
+                            });
+                          },
+                          child: isNameEnabled
+                              ? const Icon(CupertinoIcons.check_mark)
+                              : Image.asset("assets/images/pen.png")),
+                    )
+                  ],
                 ),
               ),
               const SizedBox(
@@ -99,14 +155,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
-                    enabled: false,
                     controller: _mailController,
+                    enabled: false,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       isDense: true,
-                      suffixIcon: Image.asset("assets/images/pen.png"),
                       hintText: "ваша почта",
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                           color: Color(0xff858383),
                           fontWeight: FontWeight.w400),
                       border: InputBorder.none,
@@ -131,22 +186,51 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: const Color(0xffDddbda),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    enabled: false,
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      suffixIcon: Image.asset("assets/images/pen.png"),
-                      hintText: "ваша телефон",
-                      hintStyle: const TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: TextField(
+                          enabled: isPhoneEnabled,
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
+                          maxLength: 12,
+                          onChanged: (value) {
+                            if (value.isNotEmpty &&
+                                isNumeric(value.characters.first)) {
+                              _phoneController.text =
+                                  '+7${_phoneController.text}';
+                              _phoneController.selection =
+                                  TextSelection.fromPosition(TextPosition(
+                                      offset: _phoneController.text.length));
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            counterText: "",
+                            hintText: "ваша телефон",
+                            hintStyle: TextStyle(
+                                color: Color(0xff858383),
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16, left: 8),
+                      child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isPhoneEnabled = true;
+                            });
+                          },
+                          child: isPhoneEnabled
+                              ? const Icon(CupertinoIcons.check_mark)
+                              : Image.asset("assets/images/pen.png")),
+                    )
+                  ],
                 ),
               ),
               const SizedBox(
@@ -164,7 +248,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    openChangePassword(context);
+                  },
                   child: const Text(
                     'ИЗМЕНИТЬ ПАРОЛЬ',
                     style: TextStyle(
@@ -258,5 +344,12 @@ class _ProfilePageState extends State<ProfilePage> {
         )
       ]),
     );
+  }
+
+  void updateUserInfo(String text) {
+    DioClient()
+        .updateUserInfo("text", "+73384603250", "en")
+        .then((value) => print(value.data))
+        .catchError((e) => print(e));
   }
 }

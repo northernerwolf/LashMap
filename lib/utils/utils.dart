@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lash_map/pages/add_new_client.dart';
+import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/landing.dart';
 import 'package:lash_map/pages/splash.dart';
@@ -19,6 +20,14 @@ void openAddNewClient(BuildContext context) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => const AddNewClientPage(),
+    ),
+  );
+}
+
+void openChangePassword(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const ChangePasswordPage(),
     ),
   );
 }

@@ -42,6 +42,53 @@ class DioClient {
     }
   }
 
+  Future<Response> updateUserInfo(fullName, phone, lang) async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+    try {
+      _dio.options.headers["token"] = token;
+
+      final response = await _dio.put("/api/v1/account",
+          data: {"fullName": fullName, "phone": phone, "lang": lang});
+
+      return response;
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
+  Future<Response> updatePassword(password) async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+    try {
+      _dio.options.headers["token"] = token;
+
+      final response = await _dio
+          .put("/api/v1/account/password", data: {"password": password});
+
+      return response;
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
+  Future<Response> getUserInfo() async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+
+    try {
+      _dio.options.headers["token"] = token;
+
+      final response = await _dio.get("/api/v1/user");
+
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<Response> addNewClient(fullName, phone, comment) async {
     var prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token") ?? "";

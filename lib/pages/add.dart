@@ -16,6 +16,8 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   List<ClientList> usersList = [];
+  List<ClientList> usersSearchList = [];
+
   bool isLoaded = false;
   @override
   void initState() {
@@ -23,10 +25,24 @@ class _AddPageState extends State<AddPage> {
     getUsers();
   }
 
+  searchClient(String query) {
+    final suggestion = usersList.where((element) {
+      final fullName = element.fullName.toLowerCase();
+      final input = query.toLowerCase();
+
+      return fullName.contains(input);
+    }).toList();
+
+    setState(() {
+      usersSearchList = suggestion;
+    });
+  }
+
   getUsers() {
     DioClient().getClients().then((value) {
       setState(() {
         usersList = value;
+        usersSearchList = usersList;
         isLoaded = true;
       });
     }).catchError((e) {
@@ -91,11 +107,12 @@ class _AddPageState extends State<AddPage> {
                           color: const Color(0xfff1f1f1),
                           borderRadius: BorderRadius.circular(13),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TextField(
+                            onChanged: searchClient,
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               isDense: true,
                               prefixIcon: Icon(Icons.search),
                               prefixIconColor: Color(0xff7c7c7c),
@@ -138,9 +155,10 @@ class _AddPageState extends State<AddPage> {
                         physics: const BouncingScrollPhysics(),
                         child: Column(
                             children: List.generate(
-                                usersList.length,
+                                usersSearchList.length,
                                 (index) => ClientItem(
-                                    clientName: usersList[index].fullName))),
+                                    clientName:
+                                        usersSearchList[index].fullName))),
                       ),
                     ),
                   ),
@@ -151,7 +169,7 @@ class _AddPageState extends State<AddPage> {
         ),
         Visibility(
             visible: !isLoaded,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ))
       ],
