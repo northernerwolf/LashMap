@@ -16,8 +16,6 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    //TODO: LATER FEATURE
-    // scrollToCurrentMonth();
   }
 
   @override
@@ -42,19 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
         const SizedBox(
           height: 4,
         ),
-        Expanded(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child: Column(
-                children: List.generate(
-              12,
-              (index) => CalendarMonth(
-                month: index + 1,
-              ),
-            )),
-          ),
-        ),
+        CalendarMonth(),
       ],
     );
   }

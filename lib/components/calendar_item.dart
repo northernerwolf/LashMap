@@ -4,8 +4,7 @@ import 'package:lash_map/utils/app_colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarMonth extends StatelessWidget {
-  final int month;
-  const CalendarMonth({super.key, required this.month});
+  const CalendarMonth({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,30 +25,36 @@ class CalendarMonth extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(13)),
       child: TableCalendar(
-        firstDay: DateTime(2022, month),
-        lastDay: DateTime(2022, month + 1, 0),
-        focusedDay: DateTime(2022, month + 1, 0),
+        firstDay: DateTime(2021),
+        lastDay: DateTime(2100),
+        eventLoader: getEvents,
+        focusedDay: DateTime.now(),
         availableCalendarFormats: availableCalendarFormats,
-        availableGestures: AvailableGestures.none,
         locale: "ru_RU",
+        calendarStyle: CalendarStyle(
+            markerSize: 7,
+            markersMaxCount: 1,
+            markerDecoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(24)),
+            markerMargin: const EdgeInsets.only(left: 20),
+            todayDecoration: const BoxDecoration(color: Colors.white),
+            todayTextStyle: const TextStyle(
+                fontSize: 20,
+                color: AppColors.secondary,
+                fontWeight: FontWeight.w800),
+            defaultTextStyle:
+                const TextStyle(fontSize: 20, color: AppColors.primary),
+            outsideTextStyle: TextStyle(
+                fontSize: 20, color: AppColors.primary.withOpacity(0.3)),
+            holidayTextStyle:
+                const TextStyle(fontSize: 20, color: AppColors.primary),
+            weekendTextStyle:
+                const TextStyle(fontSize: 20, color: AppColors.primary)),
         startingDayOfWeek: StartingDayOfWeek.monday,
-        headerStyle: const HeaderStyle(
-            leftChevronVisible: false, rightChevronVisible: false),
         calendarBuilders: CalendarBuilders(
-            headerTitleBuilder: headerTitleBuilder,
-            disabledBuilder: disabledBuilder,
-            todayBuilder: (context, day, focusedDay) {
-              return Text(
-                focusedDay.day.toString(),
-                style: const TextStyle(color: AppColors.primary, fontSize: 20),
-              );
-            },
-            defaultBuilder: (context, day, focusedDay) {
-              return Text(
-                day.day.toString(),
-                style: const TextStyle(color: AppColors.primary, fontSize: 20),
-              );
-            }),
+          headerTitleBuilder: headerTitleBuilder,
+        ),
       ),
     );
   }
@@ -81,13 +86,7 @@ class CalendarMonth extends StatelessWidget {
     );
   }
 
-  Widget? disabledBuilder(
-      BuildContext context, DateTime day, DateTime focusedDay) {
-    return Visibility(
-      visible: false,
-      child: Text(
-        day.day.toString(),
-      ),
-    );
+  List getEvents(DateTime day) {
+    return List.generate(1, (index) => const Text("data"));
   }
 }

@@ -23,9 +23,6 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
     if (_nameController.text.isEmpty) {
       showSnackBar(context, "Пожалуйста, укажите имя!");
       return false;
-    } else if (_nameController.text.length < 5) {
-      showSnackBar(context, "Пожалуйста, укажите не менее 5 символов!");
-      return false;
     } else if (_phoneController.text.isEmpty) {
       showSnackBar(context, "Пожалуйста, введите номер телефона!");
       return false;

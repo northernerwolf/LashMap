@@ -1,17 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lash_map/pages/add.dart';
+import 'package:lash_map/pages/clients.dart';
 import 'package:lash_map/pages/calendar.dart';
 import 'package:lash_map/pages/home.dart';
 import 'package:lash_map/pages/menu.dart';
-import 'package:lash_map/pages/profile.dart';
+import 'package:lash_map/pages/add.dart';
 import 'package:lash_map/utils/app_colors.dart';
-import 'package:lash_map/utils/app_icons.dart';
-import 'package:lash_map/utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomNavPage extends StatefulWidget {
   const BottomNavPage({super.key});
@@ -22,8 +16,8 @@ class BottomNavPage extends StatefulWidget {
 
 class _BottomNavPageState extends State<BottomNavPage> {
   int selectedIndex = 0;
-  final screens = [
-    ProfilePage(),
+  final screens = const [
+    ClientsPage(),
     CalendarPage(),
     AddPage(),
     MenuPage(),

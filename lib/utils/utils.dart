@@ -1,4 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lash_map/pages/add_new_client.dart';
 import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';

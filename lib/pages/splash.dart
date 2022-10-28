@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lash_map/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,9 +13,18 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   String? token;
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("token");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

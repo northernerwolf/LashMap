@@ -20,6 +20,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool newPasswordSent = false;
+  bool isPasswordVisible = true;
+  bool isPasswordRepeatVisible = true;
+
   bool isLoading = false;
   var textFieldIcon, repeatTextFieldIcon;
 
@@ -94,49 +97,77 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     left: 16,
                     right: 16,
                   ),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    onChanged: (value) {
-                      if (_passwordRepeatController.text != value) {
-                        setState(() {
-                          repeatTextFieldIcon = const Icon(
-                              CupertinoIcons.xmark_circle_fill,
-                              size: 16,
-                              color: Color(0xffd25857));
-                        });
-                      } else {
-                        setState(() {
-                          repeatTextFieldIcon = const Icon(
-                              CupertinoIcons.check_mark,
-                              size: 16,
-                              color: Color(0xff007AFF));
-                        });
-                      }
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _passwordController,
+                          obscureText: isPasswordVisible,
+                          onChanged: (value) {
+                            if (_passwordRepeatController.text != value) {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.xmark_circle_fill,
+                                    size: 16,
+                                    color: Color(0xffd25857));
+                              });
+                            } else {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 16,
+                                    color: Color(0xff007AFF));
+                              });
+                            }
 
-                      if (value.length < 5) {
-                        setState(() {
-                          textFieldIcon = const Icon(
-                              CupertinoIcons.xmark_circle_fill,
-                              size: 16,
-                              color: Color(0xffd25857));
-                        });
-                      } else {
-                        setState(() {
-                          textFieldIcon = const Icon(CupertinoIcons.check_mark,
-                              size: 16, color: Color(0xff007AFF));
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "введите пароль",
-                      suffix: textFieldIcon,
-                      hintStyle: const TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
-                    ),
+                            if (value.length < 5) {
+                              setState(() {
+                                textFieldIcon = const Icon(
+                                    CupertinoIcons.xmark_circle_fill,
+                                    size: 16,
+                                    color: Color(0xffd25857));
+                              });
+                            } else {
+                              setState(() {
+                                textFieldIcon = const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 16,
+                                    color: Color(0xff007AFF));
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: "введите пароль",
+                            suffix: textFieldIcon,
+                            hintStyle: const TextStyle(
+                                color: Color(0xff858383),
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            child: isPasswordVisible
+                                ? const Icon(
+                                    CupertinoIcons.eye_slash_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )
+                                : const Icon(
+                                    CupertinoIcons.eye_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -158,35 +189,62 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: _passwordRepeatController,
-                    obscureText: true,
-                    onChanged: (value) {
-                      if (value != _passwordController.text) {
-                        setState(() {
-                          repeatTextFieldIcon = const Icon(
-                              CupertinoIcons.xmark_circle_fill,
-                              size: 16,
-                              color: Color(0xffd25857));
-                        });
-                      } else {
-                        setState(() {
-                          repeatTextFieldIcon = const Icon(
-                              CupertinoIcons.check_mark,
-                              size: 16,
-                              color: Color(0xff007AFF));
-                        });
-                      }
-                    },
-                    decoration: InputDecoration(
-                      hintText: "подтвердите пароль",
-                      border: InputBorder.none,
-                      isDense: true,
-                      suffix: repeatTextFieldIcon,
-                      hintStyle: const TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                    ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _passwordRepeatController,
+                          obscureText: isPasswordRepeatVisible,
+                          onChanged: (value) {
+                            if (value != _passwordController.text) {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.xmark_circle_fill,
+                                    size: 16,
+                                    color: Color(0xffd25857));
+                              });
+                            } else {
+                              setState(() {
+                                repeatTextFieldIcon = const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 16,
+                                    color: Color(0xff007AFF));
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "подтвердите пароль",
+                            border: InputBorder.none,
+                            isDense: true,
+                            suffix: repeatTextFieldIcon,
+                            hintStyle: const TextStyle(
+                                color: Color(0xff858383),
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPasswordRepeatVisible =
+                                    !isPasswordRepeatVisible;
+                              });
+                            },
+                            child: isPasswordRepeatVisible
+                                ? const Icon(
+                                    CupertinoIcons.eye_slash_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )
+                                : const Icon(
+                                    CupertinoIcons.eye_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )),
+                      )
+                    ],
                   ),
                 ),
               ),

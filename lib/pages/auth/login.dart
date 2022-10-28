@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool newPasswordSent = false;
+  bool isPasswordVisible = true;
 
   @override
   void dispose() {
@@ -112,17 +114,44 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      hintText: "ваш пароль",
-                      hintStyle: TextStyle(
-                          color: Color(0xff858383),
-                          fontWeight: FontWeight.w400),
-                      border: InputBorder.none,
-                    ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _passwordController,
+                          obscureText: isPasswordVisible,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            hintText: "ваш пароль",
+                            isDense: true,
+                            hintStyle: TextStyle(
+                                color: Color(0xff858383),
+                                fontWeight: FontWeight.w400),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            child: isPasswordVisible
+                                ? const Icon(
+                                    CupertinoIcons.eye_slash_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )
+                                : const Icon(
+                                    CupertinoIcons.eye_fill,
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )),
+                      )
+                    ],
                   ),
                 ),
               ),
