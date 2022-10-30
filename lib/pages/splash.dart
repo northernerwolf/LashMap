@@ -13,9 +13,6 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   String? token;
-  late StreamSubscription subscription;
-  bool isDeviceConnected = false;
-  bool isAlertSet = false;
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();

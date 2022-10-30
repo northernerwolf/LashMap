@@ -5,6 +5,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lash_map/pages/add_new_client.dart';
 import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
+import 'package:lash_map/pages/edit_client.dart';
 import 'package:lash_map/pages/landing.dart';
 import 'package:lash_map/pages/splash.dart';
 
@@ -19,10 +20,18 @@ void openLogin(BuildContext context) {
   );
 }
 
-void openAddNewClient(BuildContext context) {
-  Navigator.of(context).push(
+Future<void> openAddNewClient(BuildContext context) {
+  return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => const AddNewClientPage(),
+    ),
+  );
+}
+
+Future<void> openEditClient(BuildContext context, int id) {
+  return Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => EditClientPage(id: id),
     ),
   );
 }

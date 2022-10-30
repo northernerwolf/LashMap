@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lash_map/pages/clients.dart';
 import 'package:lash_map/pages/calendar.dart';
 import 'package:lash_map/pages/home.dart';
@@ -15,6 +19,9 @@ class BottomNavPage extends StatefulWidget {
 }
 
 class _BottomNavPageState extends State<BottomNavPage> {
+  // late StreamSubscription subscription;
+  // bool hasInternet = false;
+  // ConnectivityResult connectivityResult = ConnectivityResult.none;
   int selectedIndex = 0;
   final screens = const [
     ClientsPage(),
@@ -23,6 +30,26 @@ class _BottomNavPageState extends State<BottomNavPage> {
     MenuPage(),
     HomePage()
   ];
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // subscription = Connectivity().onConnectivityChanged.listen((result) {
+    //   setState(() {
+    //     connectivityResult = result;
+    //   });
+    // });
+    // InternetConnectionChecker().onStatusChange.listen((status) {
+    //   final hasInternet = status == InternetConnectionStatus.connected;
+    //   setState(() {
+    //     this.hasInternet = hasInternet;
+    //   });
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {

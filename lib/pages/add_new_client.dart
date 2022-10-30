@@ -206,22 +206,23 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
                             .addNewClient(_nameController.text,
                                 _phoneController.text, _commentController.text)
                             .then((value) async {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+
                           showSnackBar(
                               context, "Новый клиент успешно добавлен!");
                           setState(() {
                             _commentController.text = "";
                             _nameController.text = "";
-                            Navigator.pop(context);
 
                             _phoneController.text = "";
                           });
                         }).catchError((e) {
-                          setState(() {
-                            showSnackBar(context,
-                                "Проверьте подключение к Интернету и повторите попытку!");
-                            Navigator.pop(context);
-                            print(e);
-                          });
+                          Navigator.pop(context);
+
+                          showSnackBar(context,
+                              "Проверьте подключение к Интернету и повторите попытку!");
+                          print(e);
                         });
                       }
                     },
