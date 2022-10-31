@@ -5,7 +5,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lash_map/pages/add_new_client.dart';
 import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
+import 'package:lash_map/pages/calendar_day.dart';
 import 'package:lash_map/pages/edit_client.dart';
+import 'package:lash_map/pages/internet_not_connected.dart';
 import 'package:lash_map/pages/landing.dart';
 import 'package:lash_map/pages/splash.dart';
 
@@ -36,6 +38,14 @@ Future<void> openEditClient(BuildContext context, int id) {
   );
 }
 
+Future<void> openCalendarDay(BuildContext context, DateTime selectedDay) {
+  return Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => CalendarDayPage(selectedDay: selectedDay),
+    ),
+  );
+}
+
 void openChangePassword(BuildContext context) {
   Navigator.of(context).push(
     MaterialPageRoute(
@@ -48,6 +58,14 @@ void openLanding(BuildContext context) {
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => const LandingPage(),
+    ),
+  );
+}
+
+void openNoInternetPage(BuildContext context) {
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => const InternetNotAvailable(),
     ),
   );
 }

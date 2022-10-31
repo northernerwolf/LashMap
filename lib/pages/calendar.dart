@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lash_map/components/calendar_item.dart';
+import 'package:lash_map/components/calendar_month.dart';
 import 'package:lash_map/utils/app_colors.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _CalendarPageState extends State<CalendarPage> {
         const SizedBox(
           height: 4,
         ),
-        CalendarMonth(),
+        const CalendarMonth(),
       ],
     );
   }

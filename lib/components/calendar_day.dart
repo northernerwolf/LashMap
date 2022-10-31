@@ -1,35 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lash_map/utils/app_colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarMonth extends StatelessWidget {
-  const CalendarMonth({super.key});
+import '../utils/app_colors.dart';
+import '../utils/utils.dart';
+
+class CalendarDay extends StatefulWidget {
+  final DateTime selectedDay;
+  const CalendarDay({super.key, required this.selectedDay});
+
+  @override
+  State<CalendarDay> createState() => _CalendarDayState();
+}
+
+class _CalendarDayState extends State<CalendarDay> {
+  final Map<CalendarFormat, String> availableCalendarFormats = {
+    CalendarFormat.week: "Week"
+  };
+  DateTime focusedDay = DateTime.now();
+  DateTime selectedDay = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    focusedDay = widget.selectedDay;
+    selectedDay = widget.selectedDay;
+  }
 
   @override
   Widget build(BuildContext context) {
-    const Map<CalendarFormat, String> availableCalendarFormats = {
-      CalendarFormat.month: "Month"
-    };
-
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                offset: const Offset(0, 10),
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 60)
-          ],
-          borderRadius: BorderRadius.circular(13)),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 60)
+      ], borderRadius: BorderRadius.circular(13)),
       child: TableCalendar(
         firstDay: DateTime(2021),
         lastDay: DateTime(2100),
         eventLoader: getEvents,
-        focusedDay: DateTime.now(),
         availableCalendarFormats: availableCalendarFormats,
+        currentDay: selectedDay,
+        calendarFormat: CalendarFormat.week,
+        focusedDay: focusedDay,
         locale: "ru_RU",
         calendarStyle: CalendarStyle(
             markerSize: 7,
@@ -38,11 +52,10 @@ class CalendarMonth extends StatelessWidget {
                 color: AppColors.secondary,
                 borderRadius: BorderRadius.circular(24)),
             markerMargin: const EdgeInsets.only(left: 20),
-            todayDecoration: const BoxDecoration(color: Colors.white),
+            todayDecoration: const BoxDecoration(
+                color: AppColors.secondary, shape: BoxShape.circle),
             todayTextStyle: const TextStyle(
-                fontSize: 20,
-                color: AppColors.secondary,
-                fontWeight: FontWeight.w800),
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.w800),
             defaultTextStyle:
                 const TextStyle(fontSize: 20, color: AppColors.primary),
             outsideTextStyle: TextStyle(
@@ -52,6 +65,13 @@ class CalendarMonth extends StatelessWidget {
             weekendTextStyle:
                 const TextStyle(fontSize: 20, color: AppColors.primary)),
         startingDayOfWeek: StartingDayOfWeek.monday,
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            this.selectedDay = selectedDay;
+            this.focusedDay = selectedDay;
+          });
+          print(focusedDay);
+        },
         calendarBuilders: CalendarBuilders(
           headerTitleBuilder: headerTitleBuilder,
         ),

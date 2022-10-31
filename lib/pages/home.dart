@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   bool isNameEnabled = false;
   bool isPhoneEnabled = false;
   bool isLoaded = true;
+  bool isLanguageSelectorVisible = false;
 
   Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
@@ -316,27 +317,94 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 35,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: AppColors.primary,
-                          onPrimary: Colors.black,
-                          shadowColor: Colors.grey,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0)),
+                    Stack(
+                      children: [
+                        Visibility(
+                            visible: isLanguageSelectorVisible,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  left: 30, right: 30, top: 35),
+                              decoration: const BoxDecoration(
+                                  color: Color(0xffEBEBEB),
+                                  borderRadius: BorderRadius.vertical(
+                                      bottom: Radius.circular(10))),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 10),
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            "ENGLISH",
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            CupertinoIcons.star_fill,
+                                            color: Colors.black,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 10),
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            "РУССКИЙ",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: AppColors.secondary),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            CupertinoIcons.star_fill,
+                                            color: AppColors.secondary,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 35,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: isLanguageSelectorVisible
+                                  ? AppColors.secondary
+                                  : AppColors.primary,
+                              onPrimary: Colors.black,
+                              shadowColor: Colors.grey,
+                              elevation: 6,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0)),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                isLanguageSelectorVisible =
+                                    !isLanguageSelectorVisible;
+                              });
+                            },
+                            child: const Text(
+                              'ЯЗЫК',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
                         ),
-                        onPressed: () {},
-                        child: const Text(
-                          'ЯЗЫК',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
+                      ],
                     ),
                     const SizedBox(
                       height: 30,
