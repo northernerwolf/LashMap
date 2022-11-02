@@ -22,7 +22,7 @@ class _BottomNavPageState extends State<BottomNavPage> {
   // late StreamSubscription subscription;
   // bool hasInternet = false;
   // ConnectivityResult connectivityResult = ConnectivityResult.none;
-  int selectedIndex = 0;
+  int selectedIndex = 4;
   final screens = const [
     ClientsPage(),
     CalendarPage(),
@@ -84,6 +84,8 @@ class _BottomNavPageState extends State<BottomNavPage> {
                 icon: Icon(CupertinoIcons.house_fill), label: ""),
           ],
         ),
-        body: SafeArea(child: screens[selectedIndex]));
+        body: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: SafeArea(child: screens[selectedIndex])));
   }
 }

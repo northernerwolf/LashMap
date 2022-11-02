@@ -28,26 +28,42 @@ class _SplashPageState extends State<SplashPage> {
       subscription = Connectivity().onConnectivityChanged.listen(
         (ConnectivityResult result) async {
           isDeviceConnected = await InternetConnectionChecker().hasConnection;
-          if (!isDeviceConnected && isAlertSet == false) {
+          if (!isDeviceConnected) {
             openNoInternetPage(context);
-            setState(() => isAlertSet = true);
-          } else {}
+          } else {
+            getToken().then((value) {
+              setState(() {
+                token = value;
+              });
+              token != null ? openHome(context) : openLanding(context);
+            });
+          }
         },
       );
 
   @override
   void dispose() {
     super.dispose();
+    // subscription.cancel();
   }
 
   @override
   void initState() {
     super.initState();
-    getConnectivity();
+    getToken().then((value) {
+      setState(() {
+        token = value;
+      });
+      token != null ? openHome(context) : openLanding(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }

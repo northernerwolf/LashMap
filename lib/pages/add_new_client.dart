@@ -45,198 +45,209 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 45,
-              ),
-              Container(
-                height: 42,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 6),
-                      blurRadius: 8,
-                      spreadRadius: -5,
-                      color: Colors.black.withOpacity(0.5))
-                ]),
-                child: TextField(
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                  ),
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xffEDEDED),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(13),
-                        borderSide: BorderSide.none),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(13)),
-                    constraints:
-                        const BoxConstraints(minHeight: 42, maxHeight: 42),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 40),
-                    suffixIcon: const Icon(Icons.person_add),
-                    suffixIconColor: const Color(0xff8e8e8e),
-                    hintText: "имя",
-                    hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                  ),
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 45,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 42,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 6),
-                      blurRadius: 8,
-                      spreadRadius: -5,
-                      color: Colors.black.withOpacity(0.5))
-                ]),
-                child: TextField(
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                  ),
-                  onChanged: (value) {
-                    if (value.isNotEmpty && isNumeric(value.characters.first)) {
-                      _phoneController.text = '+7${_phoneController.text}';
-                      _phoneController.selection = TextSelection.fromPosition(
-                          TextPosition(offset: _phoneController.text.length));
-                    }
-                  },
-                  maxLength: 12,
-                  keyboardType: TextInputType.phone,
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                    counterText: "",
-                    filled: true,
-                    fillColor: const Color(0xffEDEDED),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(13),
-                        borderSide: BorderSide.none),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(13)),
-                    constraints:
-                        const BoxConstraints(minHeight: 42, maxHeight: 42),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 40),
-                    suffixIcon: const Icon(Icons.phone),
-                    suffixIconColor: const Color(0xff8e8e8e),
-                    hintText: "телефон",
-                    hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 6),
-                      blurRadius: 8,
-                      spreadRadius: -5,
-                      color: Colors.black.withOpacity(0.5))
-                ]),
-                child: TextField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 4,
-                  maxLines: 10,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                  ),
-                  controller: _commentController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xffEDEDED),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(13),
-                        borderSide: BorderSide.none),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(13)),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
-                    hintText: "комментарий",
-                    hintStyle: TextStyle(color: Colors.black.withOpacity(0.6)),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 27),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 35,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.secondary,
-                      onPrimary: Colors.black,
-                      shadowColor: Colors.grey,
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13)),
+                Container(
+                  height: 42,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(0, 6),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                        color: Colors.black.withOpacity(0.5))
+                  ]),
+                  child: TextField(
+                    style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
                     ),
-                    onPressed: () {
-                      if (validated()) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return WillPopScope(
-                              onWillPop: () async => false,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          },
-                        );
-                        DioClient()
-                            .addNewClient(_nameController.text,
-                                _phoneController.text, _commentController.text)
-                            .then((value) async {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-
-                          showSnackBar(
-                              context, "Новый клиент успешно добавлен!");
-                          setState(() {
-                            _commentController.text = "";
-                            _nameController.text = "";
-
-                            _phoneController.text = "";
-                          });
-                        }).catchError((e) {
-                          Navigator.pop(context);
-
-                          showSnackBar(context,
-                              "Проверьте подключение к Интернету и повторите попытку!");
-                          print(e);
-                        });
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xffEDEDED),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(13),
+                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(13)),
+                      constraints:
+                          const BoxConstraints(minHeight: 42, maxHeight: 42),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 40),
+                      suffixIcon: const Icon(Icons.person_add),
+                      suffixIconColor: const Color(0xff8e8e8e),
+                      hintText: "имя",
+                      hintStyle:
+                          TextStyle(color: Colors.black.withOpacity(0.6)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 42,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(0, 6),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                        color: Colors.black.withOpacity(0.5))
+                  ]),
+                  child: TextField(
+                    style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
+                    ),
+                    onChanged: (value) {
+                      if (value.isNotEmpty &&
+                          isNumeric(value.characters.first)) {
+                        _phoneController.text = '+7${_phoneController.text}';
+                        _phoneController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: _phoneController.text.length));
                       }
                     },
-                    child: const Text(
-                      'СОХРАНИТЬ',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.normal),
+                    maxLength: 12,
+                    keyboardType: TextInputType.number,
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      fillColor: const Color(0xffEDEDED),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(13),
+                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(13)),
+                      constraints:
+                          const BoxConstraints(minHeight: 42, maxHeight: 42),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 40),
+                      suffixIcon: const Icon(Icons.phone),
+                      suffixIconColor: const Color(0xff8e8e8e),
+                      hintText: "телефон",
+                      hintStyle:
+                          TextStyle(color: Colors.black.withOpacity(0.6)),
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(0, 6),
+                        blurRadius: 8,
+                        spreadRadius: -5,
+                        color: Colors.black.withOpacity(0.5))
+                  ]),
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: 4,
+                    maxLines: 10,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
+                    ),
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xffEDEDED),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(13),
+                          borderSide: BorderSide.none),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(13)),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      hintText: "комментарий",
+                      hintStyle:
+                          TextStyle(color: Colors.black.withOpacity(0.6)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 27),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 35,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.secondary,
+                        onPrimary: Colors.black,
+                        shadowColor: Colors.grey,
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13)),
+                      ),
+                      onPressed: () {
+                        if (validated()) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return WillPopScope(
+                                onWillPop: () async => false,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          );
+                          DioClient()
+                              .addNewClient(
+                                  _nameController.text,
+                                  _phoneController.text,
+                                  _commentController.text)
+                              .then((value) async {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+
+                            showSnackBar(
+                                context, "Новый клиент успешно добавлен!");
+                            setState(() {
+                              _commentController.text = "";
+                              _nameController.text = "";
+
+                              _phoneController.text = "";
+                            });
+                          }).catchError((e) {
+                            Navigator.pop(context);
+
+                            showSnackBar(context,
+                                "Пожалуйста, укажите правильный телефон без символов!");
+                            print(e);
+                          });
+                        }
+                      },
+                      child: const Text(
+                        'СОХРАНИТЬ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

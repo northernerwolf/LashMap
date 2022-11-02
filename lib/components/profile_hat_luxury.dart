@@ -16,7 +16,7 @@ class ProfileHatLuxury extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    offset: Offset(4, 4),
+                    offset: const Offset(4, 4),
                     blurRadius: 10,
                     color: Colors.black.withOpacity(0.3))
               ],
@@ -34,7 +34,7 @@ class ProfileHatLuxury extends StatelessWidget {
                         colors: [Color(0xff443C38), Color(0xff221E18)],
                       )),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 40),
+                    padding: const EdgeInsets.only(left: 40),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -119,16 +119,16 @@ class ProfileHatLuxury extends StatelessWidget {
                     borderRadius: BorderRadius.circular(60),
                     boxShadow: [
                       BoxShadow(
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                           blurRadius: 4,
                           color: Colors.black.withOpacity(0.3))
                     ],
-                    gradient: LinearGradient(colors: [
+                    gradient: const LinearGradient(colors: [
                       Color(0xffC6008E),
                       Color(0xff4D0113),
                     ])),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(4.0),
                 ),
               ),
               Container(
@@ -137,11 +137,11 @@ class ProfileHatLuxury extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(60),
                     color: Colors.white),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(4.0),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 66,
                 height: 66,
                 child: CircleAvatar(
