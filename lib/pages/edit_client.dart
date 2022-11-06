@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/app_bar.dart';
 import '../db/repo/request.dart';
 import '../utils/app_colors.dart';
 import '../utils/utils.dart';
@@ -18,7 +19,7 @@ class _EditClientPageState extends State<EditClientPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   bool isLoaded = false;
-
+  String title = "";
   bool validated() {
     if (_nameController.text.isEmpty) {
       showSnackBar(context, "Пожалуйста, укажите имя!");
@@ -90,6 +91,7 @@ class _EditClientPageState extends State<EditClientPage> {
       print(value.data["data"]);
       _commentController.text = value.data["data"]["comment"];
       _nameController.text = value.data["data"]["fullName"];
+      title = value.data["data"]["fullName"];
       _phoneController.text = value.data["data"]["phone"];
     }).catchError((e) {
       setState(() {
@@ -109,6 +111,7 @@ class _EditClientPageState extends State<EditClientPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(title.toUpperCase()),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SafeArea(
@@ -303,7 +306,7 @@ class _EditClientPageState extends State<EditClientPage> {
                                   Navigator.pop(context);
 
                                   showSnackBar(context,
-                                      "Проверьте подключение к Интернету и повторите попытку!");
+                                      "Не верный формат номера телефона");
                                   print(e);
                                 });
                               }

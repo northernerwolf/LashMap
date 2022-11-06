@@ -8,7 +8,7 @@ import 'package:lash_map/pages/clients.dart';
 import 'package:lash_map/pages/calendar.dart';
 import 'package:lash_map/pages/home.dart';
 import 'package:lash_map/pages/menu.dart';
-import 'package:lash_map/pages/add.dart';
+import 'package:lash_map/pages/add_scheme/add_scheme.dart';
 import 'package:lash_map/utils/app_colors.dart';
 
 class BottomNavPage extends StatefulWidget {
@@ -54,7 +54,6 @@ class _BottomNavPageState extends State<BottomNavPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: false,

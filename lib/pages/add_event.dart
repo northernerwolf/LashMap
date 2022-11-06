@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/app_bar.dart';
 import '../db/repo/request.dart';
 import '../utils/app_colors.dart';
 import '../utils/utils.dart';
@@ -45,6 +46,7 @@ class _AddEventPageState extends State<AddEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: appBar("НОВАЯ ЗАПИСЬ"),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SafeArea(
@@ -53,13 +55,6 @@ class _AddEventPageState extends State<AddEventPage> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 45,
-                ),
-                const Text(
-                  "НОВАЯ ЗАПИСЬ",
-                  style: TextStyle(color: AppColors.primary, fontSize: 24),
-                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -437,8 +432,8 @@ class _AddEventPageState extends State<AddEventPage> {
                           }).catchError((e) {
                             Navigator.pop(context);
 
-                            showSnackBar(context,
-                                "Проверьте подключение к Интернету и повторите попытку!");
+                            showSnackBar(
+                                context, "Не верный формат номера телефона");
                             print(e);
                           });
                         }

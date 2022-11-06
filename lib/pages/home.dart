@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                                 keyboardType: TextInputType.name,
                                 decoration: const InputDecoration(
                                   isDense: true,
-                                  hintText: "ваша имя",
+                                  hintText: "ваше имя",
                                   hintStyle: TextStyle(
                                       color: Color(0xff858383),
                                       fontWeight: FontWeight.w400),
@@ -464,8 +464,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLoaded = true;
       });
-      showSnackBar(context,
-          "Проверьте подключение к Интернету или ваше имя содержит недопустимые символы!!");
+      showSnackBar(context, "Не верный формат номера телефона");
       print(e);
     });
   }

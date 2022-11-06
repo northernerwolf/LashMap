@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../components/app_bar.dart';
 import '../db/repo/request.dart';
 import '../utils/app_colors.dart';
 import '../utils/utils.dart';
@@ -45,6 +46,7 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar("ДОБАВИТЬ КЛИЕНТА"),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -230,8 +232,8 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
                           }).catchError((e) {
                             Navigator.pop(context);
 
-                            showSnackBar(context,
-                                "Пожалуйста, укажите правильный телефон без символов!");
+                            showSnackBar(
+                                context, "Не верный формат номера телефона");
                             print(e);
                           });
                         }

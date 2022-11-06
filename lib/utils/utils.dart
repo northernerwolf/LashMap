@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lash_map/pages/add_new_client.dart';
+import 'package:lash_map/pages/add_scheme/add_custom_scheme.dart';
 import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/calendar_day.dart';
@@ -42,6 +43,14 @@ Future<void> openCalendarDay(BuildContext context, DateTime selectedDay) {
   return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => CalendarDayPage(selectedDay: selectedDay),
+    ),
+  );
+}
+
+Future<void> openAddCustomScheme(BuildContext context) {
+  return Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const AddCustomSchemePage(),
     ),
   );
 }

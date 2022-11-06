@@ -34,8 +34,15 @@ class _ClientsPageState extends State<ClientsPage> {
       return fullName.contains(input);
     }).toList();
 
+    final suggestionPhone = usersList.where((element) {
+      final phone = element.phone;
+      final input = query.toLowerCase();
+      return phone.contains(input);
+    }).toList();
+
     setState(() {
       usersSearchList = suggestion;
+      usersSearchList.addAll(suggestionPhone);
     });
   }
 
@@ -56,6 +63,7 @@ class _ClientsPageState extends State<ClientsPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(usersSearchList);
     return Scaffold(
       body: Stack(
         children: [
