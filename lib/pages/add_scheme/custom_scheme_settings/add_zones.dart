@@ -43,10 +43,10 @@ class AddZones extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(14, (index) {
-              if (index + 2 == addZonesProvider.zoneValue) {
+            children: List.generate(15, (index) {
+              if (index + 1 == addZonesProvider.zoneValue) {
                 return Text(
-                  "${index + 2}",
+                  "${index + 1}",
                   style: const TextStyle(
                       color: Color.fromARGB(255, 78, 78, 78), fontSize: 24),
                 );
@@ -65,19 +65,18 @@ class AddZones extends StatelessWidget {
           Slider(
             value: addZonesProvider.zoneValue,
             activeColor: AppColors.secondary,
-            min: 2,
+            min: 1,
             max: 15,
-            divisions: 13,
+            divisions: 14,
             inactiveColor: const Color(0xffcacaca),
             thumbColor: const Color(0xffeeeeee),
             onChanged: (value) {
-              print(value);
               addZonesProvider.setZoneValue(value);
             },
           ),
           Column(
             children:
-                List.generate(addZonesProvider.zoneValue.toInt() - 1, (index) {
+                List.generate(addZonesProvider.zoneValue.toInt(), (index) {
               return FittedBox(
                 child: Row(
                   children: [
@@ -92,7 +91,7 @@ class AddZones extends StatelessWidget {
                           color: AppColors.primary),
                       child: Center(
                           child: Text(
-                        "зона ${index + 2}",
+                        "зона ${index + 1}",
                         style:
                             const TextStyle(color: Colors.white, fontSize: 20),
                       )),
@@ -105,20 +104,30 @@ class AddZones extends StatelessWidget {
                       inactiveColor: const Color(0xffcacaca),
                       thumbColor: const Color(0xffeeeeee),
                       onChanged: (value) {
-                        addZonesProvider.setZoneValues(index, value);
+                        addZonesProvider.zoneValuesEnabled[index]
+                            ? addZonesProvider.setZoneValues(index, value)
+                            : null;
                       },
                     ),
-                    Container(
-                        width: 34,
-                        height: 34,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13),
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xffebebeb), width: 1)),
-                        child: const Icon(
-                          Icons.lock_outline,
-                        )),
+                    GestureDetector(
+                      onTap: () {
+                        addZonesProvider.updateZoneValuesEnabled(index);
+                      },
+                      child: Container(
+                          width: 34,
+                          height: 34,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(13),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: const Color(0xffebebeb), width: 1)),
+                          child: Icon(
+                            Icons.lock_outline,
+                            color: addZonesProvider.zoneValuesEnabled[index]
+                                ? AppColors.secondary
+                                : AppColors.primary,
+                          )),
+                    ),
                     const SizedBox(
                       width: 12,
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lash_map/components/app_bar.dart';
 import 'package:lash_map/pages/add_scheme/custom_scheme_settings/add_zones.dart';
+import 'package:lash_map/pages/add_scheme/custom_scheme_settings/bending.dart';
 import 'package:lash_map/pages/add_scheme/custom_scheme_settings/volume.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class AddCustomSchemePage extends StatelessWidget {
             child: PageView(
               controller: addZonesProvider.pageController,
               physics: const BouncingScrollPhysics(),
-              children: const [AddZones(), LashVolume()],
+              children: const [AddZones(), LashVolume(), Bending()],
             ),
           )
         ],

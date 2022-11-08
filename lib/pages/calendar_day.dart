@@ -18,7 +18,8 @@ class CalendarDayPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              decoration:
+                  BoxDecoration(color: const Color(0xfffafafa), boxShadow: [
                 BoxShadow(
                     offset: const Offset(1, 2),
                     blurRadius: 4,

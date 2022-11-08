@@ -7,6 +7,7 @@ import 'package:lash_map/pages/add_scheme/add_custom_scheme.dart';
 import 'package:lash_map/pages/auth/change_password.dart';
 import 'package:lash_map/pages/bottom_navigation.dart';
 import 'package:lash_map/pages/calendar_day.dart';
+import 'package:lash_map/pages/contact_with_dev.dart';
 import 'package:lash_map/pages/edit_client.dart';
 import 'package:lash_map/pages/internet_not_connected.dart';
 import 'package:lash_map/pages/landing.dart';
@@ -43,6 +44,14 @@ Future<void> openCalendarDay(BuildContext context, DateTime selectedDay) {
   return Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => CalendarDayPage(selectedDay: selectedDay),
+    ),
+  );
+}
+
+Future<void> openContactDev(BuildContext context) {
+  return Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const ContactWithDevPage(),
     ),
   );
 }

@@ -421,7 +421,9 @@ class _HomePageState extends State<HomePage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          openContactDev(context);
+                        },
                         child: const Text(
                           'СВЯЗАТЬСЯ С РАЗРАБОТЧИКОМ',
                           textAlign: TextAlign.center,
