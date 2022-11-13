@@ -26,7 +26,7 @@ class AddCustomSchemePage extends StatelessWidget {
             child: PageView(
               controller: addZonesProvider.pageController,
               physics: const BouncingScrollPhysics(),
-              children: const [AddZones(), LashVolume(), Bending()],
+              children: [AddZones(), LashVolume(), Bending()],
             ),
           )
         ],
