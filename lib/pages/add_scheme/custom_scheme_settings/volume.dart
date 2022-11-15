@@ -85,7 +85,9 @@ class LashVolume extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              addZonesProvider.updateIsBlack();
+              if (!addZonesProvider.isBlack) {
+                addZonesProvider.updateIsBlack();
+              }
             },
             child: Container(
               width: double.infinity,
@@ -107,7 +109,9 @@ class LashVolume extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              addZonesProvider.updateIsBlack();
+              if (addZonesProvider.isBlack) {
+                addZonesProvider.updateIsBlack();
+              }
             },
             child: Container(
               width: double.infinity,
