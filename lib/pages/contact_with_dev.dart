@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lash_map/components/app_bar.dart';
+import 'package:lash_map/db/repo/request.dart';
 import 'package:lash_map/utils/app_colors.dart';
+import 'package:lash_map/utils/utils.dart';
 
 class ContactWithDevPage extends StatefulWidget {
   const ContactWithDevPage({super.key});
@@ -34,28 +36,67 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
     othersController.dispose();
   }
 
+  sendFeedback(TextEditingController controller, int id) {
+    if (controller.text.isNotEmpty) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return const SizedBox.expand(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+      );
+      DioClient().sendFeedback(id, controller.text).then((value) {
+        Navigator.pop(context);
+        showSnackBar(context,
+            "We will contact with you soon! Thank you for your feedback!");
+        controller.text = "";
+      }).catchError((e) {
+        showSnackBar(context, "Check internet connection!");
+        Navigator.pop(context);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(""),
         body: Column(children: [
-          Container(
-            decoration:
-                BoxDecoration(color: const Color(0xfffafafa), boxShadow: [
-              BoxShadow(
-                  offset: const Offset(1, 1),
-                  blurRadius: 4,
-                  color: Colors.black.withOpacity(0.25))
-            ]),
-            padding: const EdgeInsets.only(top: 20, bottom: 12),
-            child: const SizedBox(
-              width: double.infinity,
-              child: Text(
-                "СВЯЗАТЬСЯ\nС РАЗРАБОТЧИКОМ",
-                style: TextStyle(fontSize: 24, color: AppColors.primary),
-                textAlign: TextAlign.center,
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(top: 100, right: 26),
+                margin: EdgeInsets.only(left: 26, right: 26),
+                color: Color(0xff3C735F),
+                child: Text(
+                  "СПАСИБО ЗА ОБРАЩЕНИЕ!\nМЫ СКОРО СВЯЖЕМСЯ С ВАМИ.\nОТВЕТ ПРИДЕТ НА УКАЗАННЫЙ ВАМИ EMAIL",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
-            ),
+              Container(
+                decoration:
+                    BoxDecoration(color: const Color(0xfffafafa), boxShadow: [
+                  BoxShadow(
+                      offset: const Offset(1, 1),
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.25))
+                ]),
+                padding: const EdgeInsets.only(top: 20, bottom: 12),
+                child: const SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    "СВЯЗАТЬСЯ\nС РАЗРАБОТЧИКОМ",
+                    style: TextStyle(fontSize: 24, color: AppColors.primary),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -97,7 +138,9 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
                                     keyboardType: TextInputType.multiline,
                                   )),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      sendFeedback(paymentProblemController, 1);
+                                    },
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(
@@ -182,7 +225,10 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
                                     keyboardType: TextInputType.multiline,
                                   )),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      sendFeedback(
+                                          technicalProblemController, 2);
+                                    },
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(
@@ -267,7 +313,9 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
                                     keyboardType: TextInputType.multiline,
                                   )),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      sendFeedback(suggestionController, 3);
+                                    },
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(
@@ -353,7 +401,9 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
                                     keyboardType: TextInputType.multiline,
                                   )),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      sendFeedback(partnershipController, 4);
+                                    },
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(
@@ -437,7 +487,9 @@ class _ContactWithDevPageState extends State<ContactWithDevPage> {
                                     keyboardType: TextInputType.multiline,
                                   )),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      sendFeedback(othersController, 5);
+                                    },
                                     child: Container(
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.vertical(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lash_map/pages/splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lash_map/providers/category_provider.dart';
 import 'package:lash_map/providers/custom_lash_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,10 @@ class LashMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => CustomLashProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => CustomLashProvider()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

@@ -58,6 +58,22 @@ class DioClient {
     }
   }
 
+  Future<Response> sendFeedback(id, feedback) async {
+    var prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("token") ?? "";
+    try {
+      _dio.options.headers["token"] = token;
+
+      final response = await _dio
+          .post("/api/v1/feedback", data: {"categoryId": id, "text": feedback});
+
+      return response;
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+  }
+
   Future<Response> updatePassword(password) async {
     var prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token") ?? "";

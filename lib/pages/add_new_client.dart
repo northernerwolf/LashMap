@@ -226,7 +226,6 @@ class _AddNewClientPageState extends State<AddNewClientPage> {
                             setState(() {
                               _commentController.text = "";
                               _nameController.text = "";
-
                               _phoneController.text = "";
                             });
                           }).catchError((e) {
